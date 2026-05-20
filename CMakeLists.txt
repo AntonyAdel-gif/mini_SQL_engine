@@ -7,4 +7,8 @@ add_executable(mini_SQL_engine
     .gitignore
     table.h
     table.cpp
+    types.h
+    Operations.h
+    parser.h
+    parser.cpp
 )

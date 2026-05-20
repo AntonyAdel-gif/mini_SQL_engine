@@ -55,6 +55,12 @@ build CMakeFiles/mini_SQL_engine.dir/table.cpp.obj: CXX_COMPILER__mini_SQL_engin
   OBJECT_DIR = CMakeFiles\mini_SQL_engine.dir
   OBJECT_FILE_DIR = CMakeFiles\mini_SQL_engine.dir
 
+build CMakeFiles/mini_SQL_engine.dir/parser.cpp.obj: CXX_COMPILER__mini_SQL_engine_unscanned_Debug E$:/C++$ projects-new/mini_SQL_engine/parser.cpp || cmake_object_order_depends_target_mini_SQL_engine
+  DEP_FILE = CMakeFiles\mini_SQL_engine.dir\parser.cpp.obj.d
+  FLAGS = -g -std=gnu++14 -fdiagnostics-color=always
+  OBJECT_DIR = CMakeFiles\mini_SQL_engine.dir
+  OBJECT_FILE_DIR = CMakeFiles\mini_SQL_engine.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target mini_SQL_engine
@@ -63,7 +69,7 @@ build CMakeFiles/mini_SQL_engine.dir/table.cpp.obj: CXX_COMPILER__mini_SQL_engin
 #############################################
 # Link the executable mini_SQL_engine.exe
 
-build mini_SQL_engine.exe: CXX_EXECUTABLE_LINKER__mini_SQL_engine_Debug CMakeFiles/mini_SQL_engine.dir/table.cpp.obj
+build mini_SQL_engine.exe: CXX_EXECUTABLE_LINKER__mini_SQL_engine_Debug CMakeFiles/mini_SQL_engine.dir/table.cpp.obj CMakeFiles/mini_SQL_engine.dir/parser.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\mini_SQL_engine.dir
