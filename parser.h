@@ -145,7 +145,7 @@ public:
             int start = rest.find('(');
             int end = rest.find(')');
             if (start != string::npos && end != string::npos && start < end) {
-                rest = rest.substr(start, end - start + 1);
+                rest = rest.substr(start + 1, end - start - 1);
                 if(validateColumnList(rest, err_msg)) {
                     q.columns = splitBy(rest, ',');
                 }
@@ -162,6 +162,7 @@ public:
             }
 
         }
+        return q;
     }
 
 
