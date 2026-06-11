@@ -51,7 +51,7 @@ private:
 
 
 
-    bool validateColumnList(const string& s, string& errorMessage) {
+    bool validateColumnNames(const string& s, string& errorMessage) {
         ValidationState state = EXPECT_WORD;
         string current_token = "";
 
@@ -144,9 +144,17 @@ public:
             getline(ss, rest);
             int start = rest.find('(');
             int end = rest.find(')');
+            int end_query = rest.find(';');
             if (start != string::npos && end != string::npos && start < end) {
+                for (int i = end +1 ; i < end_query; i++) {
+                    if (rest[i] != ' ') {
+                        q.isValid = false;
+                        q.errorMessage = "CREATE TABLE statment need to have ';' at the end";
+                        return q;
+                    }
+                }
                 rest = rest.substr(start + 1, end - start - 1);
-                if(validateColumnList(rest, err_msg)) {
+                if(validateColumnNames(rest, err_msg)) {
                     q.columns = splitBy(rest, ',');
                 }
                 else {
@@ -160,8 +168,66 @@ public:
                 q.errorMessage = "Invalid '(' or ')' position";
                 return q;
             }
-
         }
+        if (q.command == "INSERT") {
+            ss>>word;
+            if (word == "INTO") {
+                ss >> word; // table_name validation
+                if (word == q.table_name) {
+                    vector<string> INSERT_query;
+                    for (string s : ss >> word) {
+                        if (word == ")") {
+                            break;
+                        }
+                        INSERT_query.push_back(s);
+                    }
+                    //validate Brackets content
+                    for (int i = 1 ; i < INSERT_query.size(); i = i+2) {
+                        for (int j = 0 ; j < q.columns.size(); j++) {
+                            if (q.columns[j] == INSERT_query[i]) {
+                                break;
+                            }
+                        }
+                        else {
+                            q.isValid = false;
+                            //
+                            return q;
+                        }
+                    }
+                    vector<string>().swap(INSERT_query); // clear the vector
+                    ss >> word;
+                    if (word == "VALUES") {
+                        for (string s : ss >> word) {
+                            if (word == ")") {
+                                break;
+                            }
+                            INSERT_query.push_back(s);
+                        }
+                        //validate Brackets content
+                        for (int i = 1 ; i < INSERT_query.size(); i = i++) {
+                            q.values[i] = INSERT_query[i];
+                        }
+                    }
+                    else {
+                        q.isValid = false;
+                        q.errorMessage = "Expect 'VALUES' instead of " + word;
+                        return q;
+                    }
+                }
+                else {
+                    q.isValid = false;
+                    //
+                    //
+                }
+            }
+            else {
+                q.isValid = false;
+                q.errorMessage = "Invalid 'INSERT' position";
+                return q;
+            }
+        }
+
+
         return q;
     }
 
